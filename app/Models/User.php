@@ -2,32 +2,30 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Kitle atanabilir alanlar
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
-       ];
+    ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Gizli tutulacak alanlar
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -35,15 +33,40 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Dönüştürülmesi gereken alan tipleri
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    /**
+     * Kullanıcının organizer olup olmadığını kontrol eder.
+     *
+     * @return bool
+     */
+    public function isOrganizer(): bool
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->role === 'organizer';
+    }
+
+    /**
+     * Kullanıcının attendee olup olmadığını kontrol eder.
+     *
+     * @return bool
+     */
+    public function isAttendee(): bool
+    {
+        return $this->role === 'attendee';
+    }
+
+    /**
+     * Kullanıcının oluşturduğu etkinlikler (opsiyonel ilişki)
+     */
+    public function events()
+    {
+        return $this->hasMany(Event::class);
     }
 }

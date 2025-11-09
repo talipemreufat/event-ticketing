@@ -7,9 +7,12 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class EventController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $events = Event::where('user_id', Auth::id())->latest()->get();
@@ -45,7 +48,7 @@ class EventController extends Controller
             'image_path' => $imagePath,
         ]);
 
-        return redirect()->route('organizer.events.index')->with('success', 'Etkinlik başarıyla oluşturuldu!');
+        return redirect()->route('organizer.events.index')->with('success', 'Event created successfully!');
     }
 
     public function show(Event $event)
@@ -81,7 +84,7 @@ class EventController extends Controller
 
         $event->update($data);
 
-        return redirect()->route('organizer.events.index')->with('success', 'Etkinlik güncellendi.');
+        return redirect()->route('organizer.events.index')->with('success', 'Event updated successfully!');
     }
 
     public function destroy(Event $event)
@@ -94,6 +97,6 @@ class EventController extends Controller
 
         $event->delete();
 
-        return redirect()->route('organizer.events.index')->with('success', 'Etkinlik silindi.');
+        return redirect()->route('organizer.events.index')->with('success', 'Event deleted successfully!');
     }
 }

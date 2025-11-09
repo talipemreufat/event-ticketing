@@ -10,7 +10,13 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::all();
+        // 🔹 Tüm etkinlikleri çekiyoruz
+        $events = Event::with('ticketTypes')->get();
+
+        // 🔹 Debug için (bir kere çalıştır, sonra silebilirsin)
+        // dd($events);
+
+        // 🔹 View'a gönder
         return view('events.index', compact('events'));
     }
 
@@ -32,5 +38,11 @@ class EventController extends Controller
         Event::create($validated);
 
         return redirect()->route('events.index')->with('success', 'Etkinlik başarıyla oluşturuldu!');
+    }
+
+    public function show(Event $event)
+    {
+        $event->load('ticketTypes');
+        return view('events.show', compact('event'));
     }
 }
