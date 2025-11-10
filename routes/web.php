@@ -58,6 +58,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    
+});
+Route::middleware(['auth', 'role:organizer'])->group(function () {
+    Route::get('/check-in', [\App\Http\Controllers\Organizer\CheckInController::class, 'index'])->name('checkin.index');
+    Route::post('/check-in/verify', [\App\Http\Controllers\Organizer\CheckInController::class, 'verify'])->name('checkin.verify');
 });
 
 require __DIR__ . '/auth.php';

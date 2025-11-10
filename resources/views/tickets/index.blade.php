@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('🎟️ Purchased Tickets') }}
+            {{ __('🎟️ My Tickets') }}
         </h2>
     </x-slot>
 
@@ -21,44 +21,48 @@
                     </div>
                 @endif
 
-                @if($orders->isEmpty())
+                @if($tickets->isEmpty())
                     <div class="text-center py-8 text-gray-600">
-                        <p class="text-lg">Henüz hiç bilet satın almadın 🎫</p>
+                        <p class="text-lg">You haven't purchased any tickets yet 🎫</p>
                         <a href="{{ route('events.index') }}" class="mt-4 inline-block bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700">
-                            Etkinlikleri Gör
+                            Browse Events
                         </a>
                     </div>
                 @else
                     <table class="min-w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm">
                         <thead class="bg-indigo-600 text-white">
                             <tr>
-                                <th class="px-6 py-3 text-left text-sm font-semibold">Etkinlik</th>
-                                <th class="px-6 py-3 text-left text-sm font-semibold">Tarih</th>
-                                <th class="px-6 py-3 text-left text-sm font-semibold">Konum</th>
-                                <th class="px-6 py-3 text-left text-sm font-semibold">Toplam Fiyat (TL)</th>
-                                <th class="px-6 py-3 text-left text-sm font-semibold">Durum</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Event</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Date</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Location</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Ticket Type</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Total Price (TL)</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Status</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($orders as $order)
+                            @foreach($tickets as $ticket)
                                 <tr class="hover:bg-gray-50 transition">
                                     <td class="px-6 py-4 text-gray-800 font-medium">
-                                        {{ $order->event->title }}
+                                        {{ $ticket->event->title ?? 'N/A' }}
                                     </td>
                                     <td class="px-6 py-4 text-gray-600">
-                                        {{ \Carbon\Carbon::parse($order->event->date)->format('d M Y') }}
+                                        {{ $ticket->event->date ? \Carbon\Carbon::parse($ticket->event->date)->format('d M Y') : '-' }}
                                     </td>
                                     <td class="px-6 py-4 text-gray-600">
-                                        {{ $order->event->location }}
+                                        {{ $ticket->event->location ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-600">
+                                        {{ $ticket->ticketType->name ?? '-' }}
                                     </td>
                                     <td class="px-6 py-4 text-gray-800 font-semibold">
-                                        {{ number_format($order->total_price, 2) }}
+                                        {{ number_format($ticket->total_price, 2) }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        @if($order->status === 'paid')
-                                            <span class="bg-green-100 text-green-700 text-sm font-semibold px-3 py-1 rounded-full">Ödendi</span>
+                                        @if($ticket->is_checked_in)
+                                            <span class="bg-green-100 text-green-700 text-sm font-semibold px-3 py-1 rounded-full">Checked In</span>
                                         @else
-                                            <span class="bg-yellow-100 text-yellow-700 text-sm font-semibold px-3 py-1 rounded-full">{{ ucfirst($order->status) }}</span>
+                                            <span class="bg-yellow-100 text-yellow-700 text-sm font-semibold px-3 py-1 rounded-full">Active</span>
                                         @endif
                                     </td>
                                 </tr>
