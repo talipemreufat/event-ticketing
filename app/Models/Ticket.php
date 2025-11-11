@@ -35,6 +35,6 @@ class Ticket extends Model
 
     public function ticketType()
     {
-        return $this->belongsTo(TicketType::class);
+        return $this->belongsTo(\App\Models\TicketType::class);
     }
 }

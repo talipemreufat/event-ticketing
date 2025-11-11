@@ -10,19 +10,26 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'title',
         'description',
         'location',
         'date',
+        'organizer_id',
+        'created_by',
+        'user_id',
     ];
 
-    public function user()
+    public function organizer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'organizer_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
     public function ticketTypes()
     {
-        return $this->hasMany(TicketType::class);
+        return $this -> hasMany(\App\Models\TicketType::class);
     }
 }

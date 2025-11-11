@@ -63,8 +63,8 @@
                                                       class="inline">
                                                     @csrf
                                                     <button type="submit"
-                                                        class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
-                                                        Bilet Al
+                                                        class="bg-green-600 text-pink px-3 py-1 rounded hover:bg-green-700">
+                                                        Bilet Satın Al
                                                     </button>
                                                 </form>
                                             @else

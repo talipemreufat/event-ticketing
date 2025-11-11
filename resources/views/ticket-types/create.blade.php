@@ -13,33 +13,44 @@
 
                     <div class="mb-4">
                         <label for="event_id" class="block text-sm font-medium text-gray-700">Etkinlik</label>
-                        <select name="event_id" id="event_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm">
-                            @foreach($events as $event)
-                                <option value="{{ $event->id }}">{{ $event->title }}</option>
-                            @endforeach
+                        <select name="event_id" id="event_id"
+                                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            @if($events->count() > 0)
+                                @foreach($events as $event)
+                                    <option value="{{ $event->id }}">{{ $event->title }}</option>
+                                @endforeach
+                            @else
+                                <option disabled>Uygun etkinlik bulunamadı</option>
+                            @endif
                         </select>
                     </div>
 
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Bilet Türü Adı</label>
-                        <input type="text" name="name" id="name" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
+                        <input type="text" name="name" id="name"
+                               class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                               required>
                     </div>
 
                     <div class="mb-4">
                         <label for="price" class="block text-sm font-medium text-gray-700">Fiyat (TL)</label>
-                        <input type="number" step="0.01" name="price" id="price" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
+                        <input type="number" step="0.01" name="price" id="price"
+                               class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                               required>
                     </div>
 
                     <div class="mb-4">
                         <label for="quantity" class="block text-sm font-medium text-gray-700">Adet</label>
-                        <input type="number" name="quantity" id="quantity" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
+                        <input type="number" name="quantity" id="quantity"
+                               class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                               required>
                     </div>
 
                     <div class="flex justify-end">
                         <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
                             Kaydet
                         </button>
-                        <a href="{{ route('ticket-types.index') }}" class="ml-2 text-gray-600">
+                        <a href="{{ route('ticket-types.index') }}" class="ml-2 text-gray-600 hover:text-gray-900">
                             Vazgeç
                         </a>
                     </div>

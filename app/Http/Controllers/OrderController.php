@@ -2,49 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-
     public function index()
     {
-        //
-    }
+        // Eğer admin ise tüm siparişleri görsün
+        if (Auth::user()->role === 'admin') {
+            $orders = Order::with(['event', 'user'])->latest()->get();
+        }
+        // Organizer ise sadece kendi event'lerinin siparişlerini görsün
+        elseif (Auth::user()->role === 'organizer') {
+            $orders = Order::whereHas('event', function ($q) {
+                $q->where('organizer_id', Auth::id());
+            })->with(['event', 'user'])->get();
+        }
+        // Attendee ise kendi aldığı biletleri görsün
+        else {
+            $orders = Order::where('user_id', Auth::id())->with('event')->get();
+        }
 
-
-    public function create()
-    {
-        //
-    }
-
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    public function show(string $id)
-    {
-        //
-    }
-
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-
-    public function destroy(string $id)
-    {
-        //
+        return view('orders.index', compact('orders'));
     }
 }
